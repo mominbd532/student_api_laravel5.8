@@ -43,7 +43,15 @@ class ClassController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $validatedData = $request->validate([
+        'class_name' => 'required|unique:classes|max:25',
+        ]);
+
+        $data = array();
+        $data['class_name']=$request->class_name;
+        DB::table('classes')->insert($data);
+        return response('done');
+
     }
 
     /**
@@ -54,7 +62,8 @@ class ClassController extends Controller
      */
     public function show($id)
     {
-        //
+        $show =DB::table('classes')->where('id',$id)->first();
+        return response()->json($show);
     }
 
 
@@ -68,7 +77,17 @@ class ClassController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $validatedData = $request->validate([
+            'class_name' => 'required|unique:classes|max:25',
+        ]);
+
+        $data = array();
+        $data['class_name']=$request->class_name;
+        DB::table('classes')->where('id',$id)->update($data);
+        return response('Updated');
+
+
+
     }
 
     /**
@@ -79,6 +98,7 @@ class ClassController extends Controller
      */
     public function destroy($id)
     {
-        //
+        DB::table('classes')->where('id',$id)->delete();
+        return response('deleted');
     }
 }
